@@ -56,7 +56,7 @@ const Game = () => {
                 setTimeout(() => setShowError(false), 1500);
             }
 
-            setTimeout(() => setShowTrivia(false), 6000);
+            // setTimeout(() => setShowTrivia(false), 6000);
         } catch (error) {
             console.log(error);
             alert("Something went wrong, please try again later.");
@@ -80,13 +80,17 @@ const Game = () => {
             {showConfetti && <Confetti />}
 
             <div className="border p-6 flex flex-col w-full max-w-2xl bg-white rounded-xl shadow-md overflow-hidden">
-                <h1 className="font-semibold text-xl md:text-2xl text-center mb-4">Guess the Place</h1>
+                <h1 className="font-semibold text-xl md:text-2xl text-center mb-6 text-[#8000FF]">Guess the Place</h1>
 
                 {question ? (
                     <>
-                        <div className="mb-4">
+                        <div className="mb-6 bg-gray-50 p-4 rounded-lg border-l-4 border-[#8000FF] shadow-sm">
+                            <h3 className="font-medium text-gray-800 mb-2 text-base md:text-lg">Clues:</h3>
                             {question.clues.map((clue, index) => (
-                                <p key={index} className="text-gray-700 text-sm md:text-base">{clue}</p>
+                                <div key={index} className="flex items-start mb-2 last:mb-0">
+                                    <span className="text-[#8000FF] mr-2 font-bold">•</span>
+                                    <p className="text-gray-700 text-sm md:text-base leading-relaxed">{clue}</p>
+                                </div>
                             ))}
                         </div>
 
@@ -130,14 +134,14 @@ const Game = () => {
 
                         {showError && (
                             <div className="mt-4 text-center">
-                                <p className="text-red-500 text-lg">That's giving wrong answer energy. Try again!</p>
+                                <p className="text-red-500 text-lg font-medium">Bruh, not it. Try again!</p>
                                 <img src={sadEmoji} alt="Sad Emoji" className="w-16 h-16 mx-auto mt-2" />
                             </div>
                         )}
 
                         {showTrivia && trivia && (
-                            <div className="mt-4 bg-yellow-100 p-3 rounded-md text-center">
-                                <p className="text-gray-800 text-sm md:text-base">💡 Fun Fact: {trivia}</p>
+                            <div className="mt-4 bg-yellow-100 p-4 rounded-lg border-l-4 border-yellow-400 shadow-sm">
+                                <p className="text-gray-800 text-sm md:text-base">💡 <span className="font-medium">Fun Fact:</span> {trivia}</p>
                             </div>
                         )}
                     </>
