@@ -1,23 +1,24 @@
+import OnboardingImg from '../assets/onboardingImage.webp'
+
 const Onboarding = () => {
     return (
         <div>
-            <div className="bg-[grey] opacity-70 h-screen w-screen flex items-center justify-center">
-                <div className=" border flex h-[500px] w-[900px] bg-white rounded-[1rem]">
+            <div className="bg-[grey] h-screen w-screen flex items-center justify-center">
+                <div className=" flex h-[60%] w-[63%] bg-white rounded-[1rem] overflow-hidden">
                     <div className="left w-[60%]">
-                        sdfsfsdfsdf
+                        <img src={OnboardingImg} className='w-[100%] h-[100%] object-cover rounded-l-[1rem]' />
                     </div>
                     <div className="right w-[40%] flex flex-col py-[1rem] px-[1.5rem] justify-around">
-                        <h1>Lets Play Globetrotter </h1>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Totam inventore tempora officia ex ut ipsum ratione distinctio enim quaerat! Delectus voluptates voluptas ipsam ducimus expedita exercitationem architecto inventore commodi et.</p>
-                        <input type="text" placeholder="Enter Your name" className="border h-[3.5rem] rounded-[0.4rem] " />
-                        <button className="!bg-[#8000FF] text-white ">Submit</button>
-                        <a className="text-center">Skip</a>
-
+                        <h1>Welcome to Globetrotter! </h1>
+                        <p> Get ready to decode cryptic clues, guess famous destinations, and uncover fascinating facts from around the world. </p>
+                        <input type="text" placeholder="Enter Your Name" className="border h-[3.5rem] rounded-[0.4rem] px-2 focus:outline-none focus:ring-0" />
+                        <button className="!bg-[#8000FF] text-white h-[3rem] rounded-[0.4rem]" >Submit</button>
+                        <a className="text-center cursor-pointer">Skip</a>
                     </div>
-
                 </div>
             </div>
         </div>
     )
 }
+
 export default Onboarding
