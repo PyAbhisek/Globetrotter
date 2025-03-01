@@ -1,13 +1,15 @@
 import { useState } from 'react'
 import Onboarding from './components/Onboarding'
+import Game from './components/Game'
 
 
 function App() {
-  const [count, setCount] = useState(0)
+ 
 
   return (
     <>
-    <Onboarding/>
+    {/* <Onboarding/> */}
+    <Game/>
     </>
   )
 }
