@@ -10,7 +10,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <Routes>
       <Route path="/" element={<App />} />
       <Route path="/play" element={<Game />} />
-      <Route path="/onboard" element={<Onboarding />} />
+
     </Routes>
   </Router>
 );
