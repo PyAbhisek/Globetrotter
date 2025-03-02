@@ -1,15 +1,13 @@
 import { useEffect, useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 
-const Onboarding = ({ imageUrl }) => {
+const Onboarding = ({ imageUrl, correctScore, incorrectScore }) => {
     const [showError, setShowError] = useState(false);
     const [userInput, setUserInput] = useState('');
     const [apiRes, setApiRes] = useState({});
     const [showMessage, setShowMessage] = useState(false);
- 
 
-    const handleSubmit = async () => {
-        if(!userInput) return
+    const registerUser = async () => {
+        if (!userInput) return;
         try {
             let res = await fetch('http://localhost:5000/api/users/register', {
                 method: 'POST',
@@ -23,27 +21,62 @@ const Onboarding = ({ imageUrl }) => {
             let data = await res.json();
             setApiRes(data);
             setShowMessage(true);
+
+            if (data.success) {
+                await saveResults(userInput);
+                inviteFriend(userInput, correctScore, incorrectScore);
+            }
         } catch (error) {
             setShowError(true);
         }
+    };
+
+    const saveResults = async (userId) => {
+        try {
+            await fetch('http://localhost:5000/api/results/save', {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    username: userId,
+                    score: {
+                        correctScore: correctScore,
+                        incorrectScore: incorrectScore,
+                    }
+                })
+            });
+        } catch (error) {
+            console.log(error)
+            setShowError(true);
+        }
+    };
+
+    const inviteFriend = (username, correctScore, incorrectScore) => {
+        const baseGameUrl = "http://localhost:5173/play";
+        const gameLink = `${baseGameUrl}?ref=${encodeURIComponent(username)}&score=${correctScore}-${incorrectScore}`;
+        
+        const message = `Hey! I just played Globetrotter.\nMy username: ${username}\nCorrect Answers: ${correctScore}\nIncorrect Answers: ${incorrectScore}\nCan you beat my score? Join me now!\nPlay here: ${gameLink}`;
+        
+        const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
+        window.open(whatsappUrl, '_blank');
     };
 
     useEffect(() => {
         let timeOutID = setTimeout(() => {
             setShowError(false);
         }, 2000);
-
         return () => clearTimeout(timeOutID);
-    }, []);
+    }, [showError]);
 
     useEffect(() => {
-        let timeOutID = setTimeout(() => {
-            setShowMessage(false);
-        }, 2000);
-
-        return () => clearTimeout(timeOutID);
-    }, []);
-
+        if (showMessage) {
+            let timeOutID = setTimeout(() => {
+                setShowMessage(false);
+            }, 1400);
+            return () => clearTimeout(timeOutID);
+        }
+    }, [showMessage]);
 
     return (
         <div>
@@ -55,7 +88,7 @@ const Onboarding = ({ imageUrl }) => {
                     <div className="right w-[40%] flex flex-col py-[1rem] px-[1.5rem] justify-around">
                         <h1>Welcome to Globetrotter!</h1>
                         <p>Get ready to decode cryptic clues, guess famous destinations, and uncover fascinating facts from around the world.</p>
-                       
+
                         <input
                             type="text"
                             placeholder="Enter Your Name"
@@ -63,9 +96,9 @@ const Onboarding = ({ imageUrl }) => {
                             onChange={(e) => setUserInput(e.target.value)}
                         />
                         <div className="h-[5px] flex items-center justify-center">
-                            {showMessage && <div className={`${apiRes?.status ? "text-green-500" : "text-red-500"} text-center`}>{apiRes?.message}</div>}
+                            {showMessage && <div className={`${apiRes?.success ? "text-green-500" : "text-red-500"} text-center`}>{apiRes?.message}</div>}
                         </div>
-                        <button className="!bg-[#8000FF] text-white h-[3rem] rounded-[0.4rem]" onClick={handleSubmit}>
+                        <button className="!bg-[#8000FF] text-white h-[3rem] rounded-[0.4rem]" onClick={registerUser}>
                             Invite your friend
                         </button>
                     </div>
