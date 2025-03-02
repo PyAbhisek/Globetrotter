@@ -98,7 +98,6 @@ const Onboarding = ({ imageUrl, correctScore, incorrectScore, onClose }) => {
                     <input
                         type="text"
                         placeholder="Enter Your Name"
-                        style={{ '::placeholder': { color: 'black' } }}
                         className="border rounded-md !border-black  px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
                         onChange={(e) => setUserInput(e.target.value)}
                     />
