@@ -153,7 +153,11 @@ const Game = () => {
 
             {/* Render the Onboarding popup using createPortal to ensure it renders above everything else */}
             {showInviteFriend && createPortal(
-                <Onboarding  imageUrl={imageUrl}  onClose={closeInviteFriend} />,
+                <Onboarding
+                    correctScore = {correctScore}
+                    incorrectScore = {incorrectScore}
+                    imageUrl={imageUrl}
+                    onClose={closeInviteFriend} />,
                 document.body
             )}
         </div>
