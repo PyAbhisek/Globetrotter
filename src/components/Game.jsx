@@ -211,7 +211,7 @@ const Game = () => {
                             {question.options.map((option, index) => (
                                 <button
                                     key={index}
-                                    className={`p-2 rounded-md transition duration-200 ${selectedOption === option ? "!bg-[#8000FF] text-white" : "!bg-gray-200 hover:bg-gray-300"}`}
+                                    className={`p-2 rounded-md transition duration-200 ${selectedOption === option ? "!bg-[#8000FF] !text-white" : "!bg-gray-200 !text-black hover:bg-gray-300"}`}
                                     onClick={() => setSelectedOption(option)}
                                 >
                                     {option}
@@ -249,7 +249,7 @@ const Game = () => {
                         )}
                         {showTrivia && trivia && (
                             <div className="mt-3 bg-yellow-100 p-3 rounded-lg border-l-4 border-yellow-400">
-                                <p>💡 <span className="font-medium">Fun Fact:</span> {trivia}</p>
+                                <p>💡 <span className="font-medium !text-black">Fun Fact:</span> {trivia}</p>
                             </div>
                         )}
                     </>
