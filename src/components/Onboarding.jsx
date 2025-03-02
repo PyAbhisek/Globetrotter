@@ -1,21 +1,28 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const Onboarding = ({ imageUrl, correctScore, incorrectScore }) => {
+const Onboarding = ({ imageUrl, correctScore, incorrectScore, onClose }) => {
     const [showError, setShowError] = useState(false);
     const [userInput, setUserInput] = useState('');
     const [apiRes, setApiRes] = useState({});
     const [showMessage, setShowMessage] = useState(false);
+    const navigate = useNavigate();
+    const apiBaseUrl = 'http://localhost:5000';
 
     const registerUser = async () => {
         if (!userInput) return;
         try {
-            let res = await fetch('http://localhost:5000/api/users/register', {
+            let res = await fetch(`${apiBaseUrl}/api/users/register`, {
                 method: 'POST',
                 headers: {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
                     username: userInput,
+                    score: {
+                        correctScore: correctScore,
+                        incorrectScore: incorrectScore,
+                    }
                 })
             });
             let data = await res.json();
@@ -23,7 +30,6 @@ const Onboarding = ({ imageUrl, correctScore, incorrectScore }) => {
             setShowMessage(true);
 
             if (data.success) {
-                await saveResults(userInput);
                 inviteFriend(userInput, correctScore, incorrectScore);
             }
         } catch (error) {
@@ -31,35 +37,19 @@ const Onboarding = ({ imageUrl, correctScore, incorrectScore }) => {
         }
     };
 
-    const saveResults = async (userId) => {
-        try {
-            await fetch('http://localhost:5000/api/results/save', {
-                method: 'POST',
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    username: userId,
-                    score: {
-                        correctScore: correctScore,
-                        incorrectScore: incorrectScore,
-                    }
-                })
-            });
-        } catch (error) {
-            console.log(error)
-            setShowError(true);
-        }
-    };
-
     const inviteFriend = (username, correctScore, incorrectScore) => {
         const baseGameUrl = "http://localhost:5173/play";
-        const gameLink = `${baseGameUrl}?ref=${encodeURIComponent(username)}&score=${correctScore}-${incorrectScore}`;
-        
+        const gameLink = `${baseGameUrl}?ref=${encodeURIComponent(username)}`;
         const message = `Hey! I just played Globetrotter.\nMy username: ${username}\nCorrect Answers: ${correctScore}\nIncorrect Answers: ${incorrectScore}\nCan you beat my score? Join me now!\nPlay here: ${gameLink}`;
-        
         const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
         window.open(whatsappUrl, '_blank');
+    };
+
+    const handleClose = () => {
+        if (onClose) {
+            onClose();
+        }
+        navigate('/play');
     };
 
     useEffect(() => {
@@ -79,32 +69,54 @@ const Onboarding = ({ imageUrl, correctScore, incorrectScore }) => {
     }, [showMessage]);
 
     return (
-        <div>
-            <div className="fixed inset-0 bg-[grey] h-screen w-screen flex items-center justify-center">
-                <div className="flex h-[60%] w-[63%] bg-white rounded-[1rem] overflow-hidden">
-                    <div className="left w-[60%]">
-                        <img src={imageUrl} className="w-[100%] h-[100%] object-cover rounded-l-[1rem]" alt="Onboarding" />
-                    </div>
-                    <div className="right w-[40%] flex flex-col py-[1rem] px-[1.5rem] justify-around">
-                        <h1>Welcome to Globetrotter!</h1>
-                        <p>Get ready to decode cryptic clues, guess famous destinations, and uncover fascinating facts from around the world.</p>
+        <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex items-center justify-center">
+            <div className="relative flex flex-col md:flex-row bg-white rounded-2xl overflow-hidden shadow-lg w-full max-w-[90%] md:max-w-[70%] lg:max-w-[60%]">
+                {/* Close Button */}
+                <button
+                    onClick={handleClose}
+                    className="absolute top-3 right-3 !bg-purple-600 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-purple-800"
+                >
+                    <span className="text-lg">×</span>
+                </button>
 
-                        <input
-                            type="text"
-                            placeholder="Enter Your Name"
-                            className="border h-[3.5rem] rounded-[0.4rem] px-2 focus:outline-none focus:ring-0"
-                            onChange={(e) => setUserInput(e.target.value)}
-                        />
-                        <div className="h-[5px] flex items-center justify-center">
-                            {showMessage && <div className={`${apiRes?.success ? "text-green-500" : "text-red-500"} text-center`}>{apiRes?.message}</div>}
+                {/* Image Section */}
+                <div className="w-full md:w-1/2">
+                    <img 
+                        src={imageUrl} 
+                        className="w-full h-56 md:h-full object-cover rounded-t-2xl md:rounded-l-2xl md:rounded-tr-none" 
+                        alt="Onboarding" 
+                    />
+                </div>
+
+                {/* Content Section */}
+                <div className="w-full md:w-1/2 flex flex-col p-6 space-y-4">
+                    <h1 className="text-xl font-semibold text-gray-800">Welcome to Globetrotter!</h1>
+                    <p className="text-gray-600 text-sm md:text-base">
+                        Get ready to decode cryptic clues, guess famous destinations, and uncover fascinating facts from around the world.
+                    </p>
+
+                    <input
+                        type="text"
+                        placeholder="Enter Your Name"
+                        className="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                        onChange={(e) => setUserInput(e.target.value)}
+                    />
+                    
+                    {showMessage && (
+                        <div className={`text-center ${apiRes?.success ? "text-green-500" : "text-red-500"}`}>
+                            {apiRes?.message}
                         </div>
-                        <button className="!bg-[#8000FF] text-white h-[3rem] rounded-[0.4rem]" onClick={registerUser}>
-                            Invite your friend
-                        </button>
-                    </div>
+                    )}
+
+                    <button
+                        className="!bg-purple-600 text-white py-2 rounded-md hover:bg-purple-800 transition"
+                        onClick={registerUser}
+                    >
+                        Invite your friend
+                    </button>
                 </div>
             </div>
-            {showError && <p className="text-red-500 text-center">Something went wrong. Please try again later.</p>}
+            {showError && <p className="text-red-500 text-center mt-2">Something went wrong. Please try again later.</p>}
         </div>
     );
 };
