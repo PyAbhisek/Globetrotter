@@ -40,10 +40,11 @@ const Onboarding = ({ imageUrl, correctScore, incorrectScore, onClose }) => {
     const inviteFriend = (username, correctScore, incorrectScore) => {
         const baseGameUrl = "https://globetrotter-mauve.vercel.app/play";
         const gameLink = `${baseGameUrl}?ref=${encodeURIComponent(username)}`;
-        const message = `Hey! I just played Globetrotter.\nMy username: ${username}\nCorrect Answers: ${correctScore}\nIncorrect Answers: ${incorrectScore}\nCan you beat my score? Join me now!\nPlay here: ${gameLink}`;
+        const message = `🌍 Hey, traveler! I just explored the world with Globetrotter! ✈️\n\n🏆 My username: ${username}\n✅ Correct Answers: ${correctScore}\n❌ Oops! Mistakes: ${incorrectScore}\n\nThink you can outsmart me? 🌎 Bring your A-game and let’s see who the real Globetrotter is! 🔥\n\n🎮 Play here: ${gameLink}`;
         const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
         window.open(whatsappUrl, '_blank');
     };
+    
 
     const handleClose = () => {
         if (onClose) {
