@@ -7,7 +7,7 @@ const Onboarding = ({ imageUrl, correctScore, incorrectScore, onClose }) => {
     const [apiRes, setApiRes] = useState({});
     const [showMessage, setShowMessage] = useState(false);
     const navigate = useNavigate();
-    const apiBaseUrl = 'http://localhost:5000';
+    const apiBaseUrl = 'https://globetrotter-backend-j5ab.onrender.com';
 
     const registerUser = async () => {
         if (!userInput) return;
@@ -38,7 +38,7 @@ const Onboarding = ({ imageUrl, correctScore, incorrectScore, onClose }) => {
     };
 
     const inviteFriend = (username, correctScore, incorrectScore) => {
-        const baseGameUrl = "http://localhost:5173/play";
+        const baseGameUrl = "https://globetrotter-mauve.vercel.app/play";
         const gameLink = `${baseGameUrl}?ref=${encodeURIComponent(username)}`;
         const message = `Hey! I just played Globetrotter.\nMy username: ${username}\nCorrect Answers: ${correctScore}\nIncorrect Answers: ${incorrectScore}\nCan you beat my score? Join me now!\nPlay here: ${gameLink}`;
         const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;

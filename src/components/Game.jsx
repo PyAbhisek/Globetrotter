@@ -26,7 +26,7 @@ const Game = () => {
     const getDestination = async () => {
         setIsLoading(true);
         try {
-            let res = await fetch("http://localhost:5000/api/destination");
+            let res = await fetch("https://globetrotter-backend-j5ab.onrender.com/api/destination");
             if (!res.ok) {
                 throw new Error(`API responded with status: ${res.status}`);
             }
@@ -54,7 +54,7 @@ const Game = () => {
             return;
         }
         try {
-            let res = await fetch(`http://localhost:5000/api/users/getscore?username=${encodeURIComponent(referralId)}`, {
+            let res = await fetch(`https://globetrotter-backend-j5ab.onrender.com/api/users/getscore?username=${encodeURIComponent(referralId)}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
@@ -128,7 +128,7 @@ const Game = () => {
         }
         
         try {
-            let res = await fetch("http://localhost:5000/api/destination/checkDestination", {
+            let res = await fetch("https://globetrotter-backend-j5ab.onrender.com/api/destination/checkDestination", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ userInput: selectedOption, alias: question.alias }),
