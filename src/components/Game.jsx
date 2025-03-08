@@ -68,15 +68,13 @@ const Game = () => {
             let data = await res.json();
             console.log("Friend score data:", data);
             
-            // Based on the error message, it seems data directly contains correctScore and incorrectScore
-            // Instead of being nested under a 'score' property
             if (data && typeof data.correctScore === 'number' && typeof data.incorrectScore === 'number') {
                 setFriendScore({
                     correctScore: data.correctScore,
                     incorrectScore: data.incorrectScore
                 });
             } else if (data && data.scores && typeof data.scores === 'object') {
-                // Alternative format: if scores are in a 'scores' property
+                
                 setFriendScore({
                     correctScore: data.scores.correctScore || 0,
                     incorrectScore: data.scores.incorrectScore || 0
@@ -87,7 +85,7 @@ const Game = () => {
             }
         } catch (error) {
             console.error("Error fetching score:", error);
-            // Set default values to prevent UI from breaking
+           
             setFriendScore({ correctScore: 0, incorrectScore: 0 });
         }
     };
@@ -108,11 +106,9 @@ const Game = () => {
         }
     };
 
-    // Initialize component without waiting for API responses
+   
     useEffect(() => {
-        // First load the question
         getDestination();
-        // Then check for referrals, but don't block rendering
         checkRefer();
         
         // Preload a random image
