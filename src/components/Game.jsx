@@ -220,9 +220,8 @@ const Game = () => {
                         </div>
                         <div className="mt-4 flex flex-col sm:flex-row justify-between gap-3">
                             <button 
-                                className="!bg-green-500 text-white px-4 py-2 rounded-md w-full hover:bg-green-600 disabled:bg-gray-300 disabled:cursor-not-allowed" 
+                                className="!bg-green-500 text-white px-4 py-2 rounded-md w-full hover:bg-green-600 " 
                                 onClick={checkDestination}
-                                disabled={!selectedOption}
                             >
                                 Submit
                             </button>
@@ -248,7 +247,7 @@ const Game = () => {
                             </div>
                         )}
                         {showTrivia && trivia && (
-                            <div className="mt-3 bg-yellow-100 p-3 rounded-lg border-l-4 border-yellow-400">
+                            <div className="mt-3 bg-yellow-100 p-3 !text-[black] rounded-lg border-l-4 border-yellow-400">
                                 <p>💡 <span className="font-medium !text-black">Fun Fact:</span> {trivia}</p>
                             </div>
                         )}
