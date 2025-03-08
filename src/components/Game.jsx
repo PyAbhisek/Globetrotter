@@ -95,7 +95,7 @@ const Game = () => {
             const urlParams = new URLSearchParams(window.location.search);
             const referralId = urlParams.get('ref');
 
-            console.log("Referral ID:", referralId);
+            // console.log("Referral ID:", referralId);
 
             if (referralId) {
                 setFriendName(referralId);
